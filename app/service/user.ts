@@ -2,9 +2,9 @@ import { Service } from 'egg';
 import { uid } from '../utils/uuid';
 
 /**
- * Test Service
+ * User Service
  */
-export default class RegisterService extends Service {
+export default class UserService extends Service {
 
   async register(user) {
     const { ctx } = this;
@@ -17,8 +17,7 @@ export default class RegisterService extends Service {
     } else {
       // 生成 uuid 作为所有文档的查询唯一值
       user.uuid = uid();
-      const save_user = new ctx.model.User(user);
-      await save_user.save();
+      await new ctx.model.User(user).save();
       result = {
         status: 'ok',
       };

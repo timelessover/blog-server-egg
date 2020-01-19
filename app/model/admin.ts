@@ -1,22 +1,17 @@
 export default app => {
     const mongoose = app.mongoose;
     const Schema = mongoose.Schema;
-    const BlogSchema = new Schema({
-        title: {
-            type: String,
-        },
-        content: {
-            type: String,
-        },
+    const AdminSchema = new Schema({
         uuid: {
             type: String,
         },
-        blogId: {
+        username: {
             type: String,
         },
-        blogImg: {
+        password: {
             type: String,
         },
     });
-    return mongoose.model('Blog', BlogSchema);
+
+    return mongoose.model('Admin', AdminSchema);
 };
