@@ -7,7 +7,7 @@ export default app => {
     const UserSchema = new Schema({
         uuid: {
             type: String,
-            default: uid(),
+            default: uid,
         },
         username: {
             type: String,

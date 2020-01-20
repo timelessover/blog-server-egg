@@ -1,4 +1,5 @@
 import { Service } from 'egg';
+import * as moment from 'moment';
 
 /**
  * Admin Service
@@ -58,7 +59,14 @@ export default class AdminService extends Service {
                 status: 'fail',
             };
         } else {
-            return result;
+            const temp: any = [];
+            result.forEach(user => {
+                const t = JSON.parse(JSON.stringify(user));
+                t.create_time = moment(new Date(t.create_time).getTime()).format('YYYY-MM-DD HH:mm:ss');
+                const { username, uuid, create_time } = t;
+                temp.push({ username, uuid, create_time });
+            });
+            return temp;
         }
     }
 }
