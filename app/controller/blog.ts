@@ -32,6 +32,21 @@ export default class BlogController extends Controller {
     const content = { ...ctx.request.body, ...payload };
     const reuslt = await ctx.service.blog.delete(content);
     ctx.body = reuslt;
-
+  }
+  async getTagList() {
+    const { ctx, app } = this;
+    const token = ctx.header.authorization;
+    const payload = await app.jwt.verify(token.split(' ')[1], app.config.jwt.secret) || {};
+    const content = { ...ctx.request.body, ...payload };
+    const reuslt = await ctx.service.blog.getTagList(content);
+    ctx.body = reuslt;
+  }
+  async findTagList() {
+    const { ctx, app } = this;
+    const token = ctx.header.authorization;
+    const payload = await app.jwt.verify(token.split(' ')[1], app.config.jwt.secret) || {};
+    const content = { ...ctx.request.body, ...payload };
+    const reuslt = await ctx.service.blog.findTagList(content);
+    ctx.body = reuslt;
   }
 }

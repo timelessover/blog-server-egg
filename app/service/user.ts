@@ -1,5 +1,4 @@
 import { Service } from 'egg';
-import { uid } from '../utils/uuid';
 
 /**
  * User Service
@@ -15,8 +14,6 @@ export default class UserService extends Service {
         status: 'fail',
       };
     } else {
-      // 生成 uuid 作为所有文档的查询唯一值
-      user.uuid = uid();
       await new ctx.model.User(user).save();
       result = {
         status: 'ok',
@@ -32,7 +29,7 @@ export default class UserService extends Service {
       if (hasUser.password === user.password) {
         const token = app.jwt.sign({ uuid: hasUser.uuid }, app.config.jwt.secret);
         result = {
-          name: hasUser.username,
+          user_name: hasUser.username,
           status: '0',
           token,
         };

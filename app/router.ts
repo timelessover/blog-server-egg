@@ -12,8 +12,14 @@ export default (app: egg.Application) => {
   router.post('/user/login', controller.user.login);
 
   // blog 增删改查
-  router.post('/blog/getBlogs', jwt as any, controller.blog.getAllBlog);
+  router.post('/blog/getblogs', jwt as any, controller.blog.getAllBlog);
   router.post('/blog/create', jwt as any, controller.blog.create);
   router.post('/blog/update', jwt as any, controller.blog.update);
   router.post('/blog/delete', jwt as any, controller.blog.delete);
+
+  // 获取文章标签与篇数
+  router.post('/blog/taglist', jwt as any, controller.blog.getTagList);
+
+  // 获取对应标签的文章
+  router.post('/blog/findtaglist', jwt as any, controller.blog.findTagList);
 };

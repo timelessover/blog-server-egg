@@ -1,5 +1,4 @@
 import { Service } from 'egg';
-import { uid } from '../utils/uuid';
 
 /**
  * Admin Service
@@ -15,7 +14,6 @@ export default class AdminService extends Service {
                 status: 'fail',
             };
         } else {
-            user.uuid = uid();
             const save_user = new ctx.model.Admin(user);
             await save_user.save();
             result = {
