@@ -1,6 +1,3 @@
-
-import { uid } from '../utils/uuid';
-
 export default app => {
     const mongoose = app.mongoose;
     const Schema = mongoose.Schema;
@@ -23,7 +20,6 @@ export default app => {
         // 文章id
         blog_id: {
             type: String,
-            default: uid(),
         },
         // 封面
 
@@ -41,6 +37,12 @@ export default app => {
 
         // 最后修改日期
         update_time: { type: Date, default: Date.now },
+
+        // 点赞数
+        likes_count: {type: Number},
+
+        // 观看数
+        view_count: { type: Number },
     });
     return mongoose.model('Blog', BlogSchema);
 };

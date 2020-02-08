@@ -2,14 +2,18 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
-import ExportAdmin from '../../../app/service/admin';
-import ExportBlog from '../../../app/service/blog';
-import ExportUser from '../../../app/service/user';
+import ExportAdminUser from '../../../app/service/admin/user';
+import ExportClientArticle from '../../../app/service/client/article';
+import ExportClientUser from '../../../app/service/client/user';
 
 declare module 'egg' {
   interface IService {
-    admin: ExportAdmin;
-    blog: ExportBlog;
-    user: ExportUser;
+    admin: {
+      user: ExportAdminUser;
+    }
+    client: {
+      article: ExportClientArticle;
+      user: ExportClientUser;
+    }
   }
 }

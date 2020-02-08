@@ -11,7 +11,7 @@ export default (appInfo: EggAppInfo) => {
   config.middleware = [];
 
   config.mongoose = {
-    url: 'mongodb://127.0.0.1:27017/?gssapiServiceName=mongodb',
+    url: 'mongodb://127.0.0.1:27017/blog',
     options: {},
   };
   config.security = {
@@ -19,7 +19,7 @@ export default (appInfo: EggAppInfo) => {
       enable: false,
       ignoreJSON: true,
     },
-    domainWhiteList: [ 'http://localhost:8000' ],
+    domainWhiteList: [ '*' ],
   };
   config.cors = {
     origin: '*',
@@ -28,11 +28,14 @@ export default (appInfo: EggAppInfo) => {
   exports.jwt = {
     enable: true,
     secret: '123456',
-    match(ctx) {
-      const regex = /login/;
-      return !regex.test(ctx.url);
-    },
   } as any;
+
+  config.cluster = {
+    listen: {
+      port: 9000,
+      hostname: '127.0.0.1',
+    }
+  };
 
   // add your special config in here
   const bizConfig = {

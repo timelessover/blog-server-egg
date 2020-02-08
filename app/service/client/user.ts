@@ -5,22 +5,6 @@ import { Service } from 'egg';
  */
 export default class UserService extends Service {
 
-  async register(user) {
-    const { ctx } = this;
-    let result;
-    const hasSameUser = await ctx.model.User.findOne({ username: user.username });
-    if (hasSameUser) {
-      result = {
-        status: 'fail',
-      };
-    } else {
-      await new ctx.model.User(user).save();
-      result = {
-        status: 'ok',
-      };
-    }
-    return result;
-  }
   async login(user) {
     const { ctx, app } = this;
     let result;

@@ -2,14 +2,16 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
-import ExportAdmin from '../../../app/controller/admin';
-import ExportBlog from '../../../app/controller/blog';
-import ExportUser from '../../../app/controller/user';
+import ExportAdminHome from '../../../app/controller/admin/home';
+import ExportClientHome from '../../../app/controller/client/home';
 
 declare module 'egg' {
   interface IController {
-    admin: ExportAdmin;
-    blog: ExportBlog;
-    user: ExportUser;
+    admin: {
+      home: ExportAdminHome;
+    }
+    client: {
+      home: ExportClientHome;
+    }
   }
 }
