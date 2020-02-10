@@ -1,26 +1,24 @@
 export default app => {
     const mongoose = app.mongoose;
     const Schema = mongoose.Schema;
-    const BlogSchema = new Schema({
+    const ArticleSchema = new Schema({
         // 标题
         title: {
             type: String,
+            required:true
+        },
+
+        article_id: {
+            type: Schema.Types.ObjectId, 
+            default: mongoose.Types.ObjectId
         },
 
         // 内容
         content: {
             type: String,
+            required: true
         },
 
-        // 用户id
-        uuid: {
-            type: String,
-        },
-
-        // 文章id
-        blog_id: {
-            type: String,
-        },
         // 封面
 
         cover: {
@@ -30,6 +28,13 @@ export default app => {
         // 标签分类
         tag_type: {
             type: String,
+            required: true
+        },
+
+        // 简介
+        introduce: {
+            type: String,
+            required: true
         },
 
         // 发布日期
@@ -39,10 +44,10 @@ export default app => {
         update_time: { type: Date, default: Date.now },
 
         // 点赞数
-        likes_count: {type: Number},
+        likes_count: { type: Number, default: 0},
 
         // 观看数
-        view_count: { type: Number },
-    });
-    return mongoose.model('Blog', BlogSchema);
+        view_count: { type: Number, default: 0 },
+    }, { versionKey: false });
+    return mongoose.model('Article', ArticleSchema);
 };
