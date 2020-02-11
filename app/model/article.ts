@@ -8,10 +8,9 @@ export default app => {
             required:true
         },
 
-        article_id: {
-            type: Schema.Types.ObjectId, 
-            default: mongoose.Types.ObjectId
-        },
+
+        category: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }],
+
 
         // 内容
         content: {
@@ -28,7 +27,6 @@ export default app => {
         // 标签分类
         tag_type: {
             type: String,
-            required: true
         },
 
         // 简介
