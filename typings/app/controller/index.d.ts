@@ -3,7 +3,7 @@
 
 import 'egg';
 import ExportAdminArticle from '../../../app/controller/admin/article';
-import ExportAdminCategory from '.../../../app/controller/admin/category
+import ExportAdminCategory from '../../../app/controller/admin/category';
 import ExportAdminHome from '../../../app/controller/admin/home';
 import ExportClientHome from '../../../app/controller/client/home';
 

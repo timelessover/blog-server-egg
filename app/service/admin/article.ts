@@ -5,16 +5,18 @@ import { Service } from 'egg';
 export default class ArticleService extends Service {
 
     async findArticles() {
-        const { ctx } = this;
+        const { ctx } = this;1
         const result = await ctx.model.Article.find().populate('category').exec();
         return result;
     }
 
     async create(conent) {
         const { ctx } = this;
-        const res = await ctx.model.Article.find(conent.category)
+        const category = await ctx.model.Category.findOne({ _id: conent.category })
+        let new_nums = category.article_num + 1
+        const res = await ctx.model.Category.findOneAndUpdate({ _id: conent.category }, { article_num: new_nums}) 
         const result = await new ctx.model.Article(conent).save();
-        if (result) {
+        if (result && res) {
             return { code: 0, msg: '创建成功' };
         } else {
             return { code: 1, msg: '创建失败' };
@@ -42,8 +44,12 @@ export default class ArticleService extends Service {
     }
     async delete(id) {
         const { ctx } = this;
+        const article = await ctx.model.Article.findOne({ _id: id });
+        const category = await ctx.model.Category.findOne({ _id: article.category })
+        let new_nums = category.article_num - 1
+        const res = await ctx.model.Category.findOneAndUpdate({ _id: article.category }, { article_num: new_nums }) 
         const result = await ctx.model.Article.findOneAndRemove({ _id: id });
-        if (result) {
+        if (result && res) {
             return { code: 0, msg: '删除成功' };
         } else {
             return { code: 1, msg: '删除失败' };

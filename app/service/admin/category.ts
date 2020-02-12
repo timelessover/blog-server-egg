@@ -24,7 +24,7 @@ export default class CategoryService extends Service {
     
     async getCategoryById(id) {
         const { ctx } = this;
-        const result = await ctx.model.Category.find({_id:id });
+        const result = await ctx.model.Category.findOne({_id:id });
         if (result) {
             return result;
         } else {

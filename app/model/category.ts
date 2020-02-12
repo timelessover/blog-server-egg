@@ -9,7 +9,7 @@ export default app => {
         desc: { type: String, default: '', required: true },
 
         // 文章篇数
-
+        article_num: { type: Number, default: 0,},
 
         // 创建日期
         create_time: { type: Date, default: Date.now },
