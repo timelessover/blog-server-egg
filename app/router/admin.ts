@@ -19,5 +19,4 @@ module.exports = app => {
     router.post('/api/admin/category/update', controller.admin.category.updateCategory)
     router.post('/api/admin/getCategoryById', controller.admin.category.getCategoryById)
     router.get('/api/admin/categories', controller.admin.category.getCategories)
-
 }
