@@ -8,10 +8,10 @@ export default app => {
             required:true
         },
 
-
+        // 关联集合
         category: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }],
 
-
+    
         // 内容
         content: {
             type: String,

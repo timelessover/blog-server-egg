@@ -4,12 +4,14 @@
 import 'egg';
 import ExportArticle from '../../../app/model/article';
 import ExportCategory from '../../../app/model/category';
+import ExportComment from '../../../app/model/comment';
 import ExportUser from '../../../app/model/user';
 
 declare module 'egg' {
   interface IModel {
     Article: ReturnType<typeof ExportArticle>;
     Category: ReturnType<typeof ExportCategory>;
+    Comment: ReturnType<typeof ExportComment>;
     User: ReturnType<typeof ExportUser>;
   }
 }

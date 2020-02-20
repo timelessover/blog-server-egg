@@ -6,6 +6,7 @@ import ExportAdminArticle from '../../../app/service/admin/article';
 import ExportAdminCategory from '../../../app/service/admin/category';
 import ExportAdminUser from '../../../app/service/admin/user';
 import ExportClientArticle from '../../../app/service/client/article';
+import ExportClientComment from '../../../app/service/client/comment';
 import ExportClientUser from '../../../app/service/client/user';
 
 declare module 'egg' {
@@ -17,6 +18,7 @@ declare module 'egg' {
     }
     client: {
       article: ExportClientArticle;
+      comment: ExportClientComment;
       user: ExportClientUser;
     }
   }

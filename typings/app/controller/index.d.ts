@@ -5,6 +5,8 @@ import 'egg';
 import ExportAdminArticle from '../../../app/controller/admin/article';
 import ExportAdminCategory from '../../../app/controller/admin/category';
 import ExportAdminHome from '../../../app/controller/admin/home';
+import ExportClientComment from '../../../app/controller/client/comment';
+import ExportClientDetail from '../../../app/controller/client/detail';
 import ExportClientHome from '../../../app/controller/client/home';
 
 declare module 'egg' {
@@ -15,6 +17,8 @@ declare module 'egg' {
       home: ExportAdminHome;
     }
     client: {
+      comment: ExportClientComment;
+      detail: ExportClientDetail;
       home: ExportClientHome;
     }
   }

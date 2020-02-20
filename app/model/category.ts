@@ -4,7 +4,7 @@ export default app => {
     const CategorySchema = new Schema({
         // 分类名称
         name: { type: String, required: true, validate: /\S+/,unique:true },
-
+        
         // 分类描述
         desc: { type: String, default: '', required: true },
 

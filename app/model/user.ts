@@ -8,6 +8,14 @@ export default app => {
         password: {
             type: String,
         },
+        // 用户头像
+        avatar: { type: String},
+        
+        // 创建日期
+        create_time: { type: Date, default: Date.now },
+
+        // 最后修改日期
+        update_time: { type: Date, default: Date.now },
     });
     return mongoose.model('User', UserSchema);
 };
