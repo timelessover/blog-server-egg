@@ -31,11 +31,27 @@ export default class ArticleService extends Service {
   }
   async getArticleList(id) {
     const { ctx } = this;
+    const category_res = await ctx.model.Category.findOne({
+      _id: id
+    });
     const result = await ctx.model.Article.find({ category: id })
+      .populate({ path: "category", select: "name" })
+      .exec();
     if (result) {
-      return result;
+      return { data: result, categroy: category_res };
     } else {
       return { code: 1, msg: "获取文章失败" };
     }
   }
+  //  async addLikeCount(id) {
+  //    const { ctx } = this;
+  //    const article = await ctx.model.Article.find({ _id: id })
+  //    const res = await ctx.model.Comment.updateOne(
+  //      {  _id: id  },
+  //      {
+  //        like_count: article.like_count + 1
+  //      }
+  //    );
+  //    return 'ok'
+  //  }
 }
