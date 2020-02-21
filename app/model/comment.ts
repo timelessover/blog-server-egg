@@ -6,8 +6,6 @@ export default app => {
         // 文章id
         article_id: { type: mongoose.Schema.Types.ObjectId, required: true},
 
-        // 被评论用户信息
-        res_userInfo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
 
         // 用户
         userInfo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }],
@@ -19,13 +17,37 @@ export default app => {
         likes_count: { type: Number, default: 0 },
 
         // 回复评论
-        res_comment: { type: Array, default: [] },
+        res_comment: [
+            {
+                // 被评论者
+                res_userInfo: {
+                    username:{type:String},
+                    avatar:{type:String},
+
+                },
+
+                // 谁在评论
+                user: {
+                    username: { type: String },
+                    avatar: { type: String }, 
+                },
+
+                // 被赞数
+                likes: { type: Number, default: 0 },
+
+                // content
+                content: { type: String, required: true, validate: /\S+/ },
+
+                // 状态 => 0 待审核 / 1 通过正常 / -1 已删除 / -2 垃圾评论
+                state: { type: Number, default: 1 },
+
+                // 创建日期
+                create_time: { type: Date, default: Date.now },
+            },
+        ],
 
         // 创建日期
         create_time: { type: Date, default: Date.now },
-
-        // 最后修改日期
-        update_time: { type: Date, default: Date.now },
 
     }, { versionKey: false });
     return mongoose.model('Comment', CommentSchema);

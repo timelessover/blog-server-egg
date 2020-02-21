@@ -1,40 +1,47 @@
 export default app => {
     const mongoose = app.mongoose;
     const Schema = mongoose.Schema;
-    const ArticleSchema = new Schema({
+    const ArticleSchema = new Schema(
+      {
         // 标题
         title: {
-            type: String,
-            required:true
+          type: String,
+          required: true
         },
 
         // 关联集合
-        category: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }],
+        category: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Category",
+            required: true
+          }
+        ],
 
-    
         // 内容
         content: {
-            type: String,
-            required: true
+          type: String,
+          required: true
         },
 
         // 封面
 
         cover: {
-            type: String,
+          type: String
         },
 
         // 标签分类
         tag_type: {
-            type: String,
+          type: String
         },
 
         // 简介
         introduce: {
-            type: String,
-            required: true
+          type: String,
+          required: true
         },
 
+        
         // 发布日期
         create_time: { type: Date, default: Date.now },
 
@@ -42,10 +49,15 @@ export default app => {
         update_time: { type: Date, default: Date.now },
 
         // 点赞数
-        likes_count: { type: Number, default: 0},
+        likes_count: { type: Number, default: 0 },
 
         // 观看数
         view_count: { type: Number, default: 0 },
-    }, { versionKey: false });
+        // 评论数
+        comment_count: { type: Number, default: 0 },
+
+      },
+      { versionKey: false }
+    );
     return mongoose.model('Article', ArticleSchema);
 };
