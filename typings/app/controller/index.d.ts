@@ -8,6 +8,7 @@ import ExportAdminHome from '../../../app/controller/admin/home';
 import ExportClientComment from '../../../app/controller/client/comment';
 import ExportClientDetail from '../../../app/controller/client/detail';
 import ExportClientHome from '../../../app/controller/client/home';
+import ExportClientUser from '../../../app/controller/client/user';
 
 declare module 'egg' {
   interface IController {
@@ -20,6 +21,7 @@ declare module 'egg' {
       comment: ExportClientComment;
       detail: ExportClientDetail;
       home: ExportClientHome;
+      user: ExportClientUser;
     }
   }
 }

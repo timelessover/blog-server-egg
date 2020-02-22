@@ -17,7 +17,7 @@ export default class CommentController extends Controller {
     }
     async getCommentList() {
         const { ctx } = this;
-        const reuslt = await ctx.service.client.comment.getCategories();
+        const reuslt = await ctx.service.client.article.getCategories();
         ctx.body = reuslt;
     }
 }
