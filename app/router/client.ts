@@ -6,8 +6,8 @@ module.exports = app => {
   router.get("/api/articlelist", controller.client.home.getArticleList);
   router.get("/api/article", controller.client.detail.getArticleById);
 
-  // router.get("/api/github/login", controller.client.user.githubLogin);
-  router.post("/api/github/login", controller.client.user.loginCallback);
+  router.post("/api/register/general", controller.client.user.generalRegister);
+  router.post("/api/github/login", controller.client.user.githubRegister);
 
   // 文章点赞
   // router.post("/api/like/add", controller.client.detail.addLikeCount);

@@ -17,7 +17,6 @@ export default class CategoryController extends Controller {
     async deleteCategory() {
         const { ctx } = this;
         const { _id } = ctx.request.body
-        console.log(_id)
         const result = await ctx.service.admin.category.delete(_id);
         ctx.body = result;
     }

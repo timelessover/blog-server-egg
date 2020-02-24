@@ -8,7 +8,7 @@ export default class AdminService extends Service {
     async login(user) {
         const { ctx, app } = this;
         let result;
-        const hasUser = await ctx.model.User.findOne({ username: user.username });
+        const hasUser = await ctx.model.Admin.findOne({ username: user.username });
         if (hasUser.password === user.password) {
             const token = app.jwt.sign({ uuid: hasUser.uuid }, app.config.jwt.secret);
             result = {

@@ -8,7 +8,7 @@ const config = {
 };
 
 export default class UserController extends Controller {
-  async loginCallback() {
+  async githubRegister() {
     const { ctx } = this;
     const code = ctx.request.body.code;
     const path = "https://github.com/login/oauth/access_token";
@@ -17,7 +17,7 @@ export default class UserController extends Controller {
       client_secret: config.client_secret,
       code: code
     };
-    console.log(code);
+    console.log(code)
     const res = await fetch(path, {
       method: "POST",
       headers: {
@@ -29,9 +29,17 @@ export default class UserController extends Controller {
     const args = body.split("&");
     let arg = args[0].split("=");
     const access_token = arg[1];
+    console.log(access_token)
     const url = "https://api.github.com/user?access_token=" + access_token;
     const data = await fetch(url);
-    const result = await data.json();
+    const user_info = await data.json();
+    const result = await ctx.service.client.user.githubRegister(user_info);
+    ctx.body = result;
+  }
+  async generalRegister() {
+    const { ctx } = this;
+    const body = ctx.request.body;
+    const result = await ctx.service.client.user.generalRegister(body);
     ctx.body = result;
   }
 }
