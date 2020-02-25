@@ -7,6 +7,7 @@ module.exports = app => {
   router.get("/api/article", controller.client.detail.getArticleById);
 
   router.post("/api/register/general", controller.client.user.generalRegister);
+  router.post("/api/login/general", controller.client.user.generalLogin);
   router.post("/api/github/login", controller.client.user.githubRegister);
 
   // 文章点赞

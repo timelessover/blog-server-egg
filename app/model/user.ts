@@ -9,6 +9,9 @@ export default app => {
         username: {
             type: String,required:true
         },
+        password: {
+            type: String
+        },
         email: {
             type: String
         },

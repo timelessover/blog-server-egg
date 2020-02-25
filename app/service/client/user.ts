@@ -25,7 +25,6 @@ export default class UserService extends Service {
     const { _id, username, avatar } = login_user;
     const token = app.jwt.sign({ id: _id }, app.config.jwt.secret);
     const userInfo = {
-      _id,
       username,
       avatar
     };
@@ -35,42 +34,62 @@ export default class UserService extends Service {
 
   async generalRegister(user) {
     const { ctx } = this;
+    /*
+    email: "714586115@qq.com"
+    username: "Chris"
+    password: "asd123456"
+    confirm: "asd123456"
+    homepage: "wwww"
+    */
     const { username, homepage, email, password } = user;
-    const conent = {
-      username,
-      email,
-      password,
-      homepage
-    };
-    const result = await new ctx.model.User(conent).save(user);
+    const search_res = await ctx.model.User.findOne({ email });
+    let result;
+    if (!search_res) {
+      const conent = {
+        username,
+        email,
+        password,
+        homepage
+      };
+      await new ctx.model.User(conent).save(user);
+      result = { code: 1, msg: "注册成功" };
+    } else {
+      result = { code: 0, msg: "用户已存在" };
+    }
     return result;
   }
 
-  async login(user) {
-    const { ctx, app } = this;
+  async generalLogin(user) {
+    const { ctx,app } = this;
+    const { email, password } = user;
     let result;
     const hasUser = await ctx.model.User.findOne({
-      username: user.username
+      email: email
     });
+
     if (hasUser) {
-      if (hasUser.password === user.password) {
-        const token = app.jwt.sign(
-          { uuid: hasUser.uuid },
-          app.config.jwt.secret
-        );
+      
+      if (password === hasUser.password) {
+        const token = app.jwt.sign({ id: hasUser._id }, app.config.jwt.secret);
         result = {
-          user_name: hasUser.username,
-          status: "0",
+          code: 0,
+          msg: "登录成功",
+          userInfo: {
+            username: hasUser.username,
+            avatar: hasUser.avatar
+          },
           token
         };
       } else {
         result = {
-          status: "1"
+          code: 1,
+          msg: "密码错误"
         };
       }
     } else {
       result = {
-        status: "2"
+        code: 2,
+        msg: "该邮箱未注册"
       };
     }
     return result;

@@ -7,6 +7,7 @@ import ExportArticle from '../../../app/model/article';
 import ExportCategory from '../../../app/model/category';
 import ExportComment from '../../../app/model/comment';
 import ExportUser from '../../../app/model/user';
+import ExportZan from '../../../app/model/zan';
 
 declare module 'egg' {
   interface IModel {
@@ -15,5 +16,6 @@ declare module 'egg' {
     Category: ReturnType<typeof ExportCategory>;
     Comment: ReturnType<typeof ExportComment>;
     User: ReturnType<typeof ExportUser>;
+    Zan: ReturnType<typeof ExportZan>;
   }
 }
