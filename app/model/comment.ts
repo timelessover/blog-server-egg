@@ -8,7 +8,7 @@ export default app => {
 
 
         // 用户
-        userInfo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }],
+        uid: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 
         // 评论内容
         content: { type: String, required: true},
@@ -23,7 +23,6 @@ export default app => {
                 res_userInfo: {
                     username:{type:String},
                     avatar:{type:String},
-
                 },
 
                 // 谁在评论

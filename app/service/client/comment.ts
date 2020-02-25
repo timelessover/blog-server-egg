@@ -6,23 +6,36 @@ export default class CommentService extends Service {
 
     async addComment(content) {
         const { ctx } = this;
-        const { article_id } = content
-        const article = await ctx.model.Article.findOne(
-          {
-            _id: article_id
-          },
-        );
-        await ctx.model.Article.updateOne(
-          {
-            _id: article_id
-          },
-          {
-            comment_count: article.comment_count + 1
-          }
-        );
+        // const { article_id,uid } = content
+
+        // 处理总
+        // const article = await ctx.model.Article.findOne(
+        //   {
+        //     _id: article_id
+        //   },
+        // );
+        // await ctx.model.Article.updateOne(
+        //   {
+        //     _id: article_id
+        //   },
+        //   {
+        //     comment_count: article.comment_count + 1
+        //   }
+        // );
+        console.log(content);
         
         const result = new ctx.model.Comment(content).save();
-        return result;
+        if(result){
+          return {
+            code:0,
+            msg:'评论成功'
+          }
+        }else{
+          return {
+            code: 1,
+            msg: "登录后才可评论"
+          };
+        }
     }
     async addSubComment(content) {
         const { ctx } = this;

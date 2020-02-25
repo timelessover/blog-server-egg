@@ -5,8 +5,13 @@ export default class CommentController extends Controller {
 
 
     async addComment() {
-        const { ctx } = this;
-        const reuslt = await ctx.service.client.comment.addComment(ctx.request.body);
+        const { ctx,app } = this;
+        const token = ctx.header.authorization;
+        const payload =
+          (await app.jwt.verify(token.split(" ")[1], app.config.jwt.secret)) ||
+          {};
+        const content = { ...payload, ...ctx.request.body };
+        const reuslt = await ctx.service.client.comment.addComment(content);
         ctx.body = reuslt;
     }
     

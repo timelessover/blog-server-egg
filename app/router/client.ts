@@ -13,10 +13,10 @@ module.exports = app => {
 
   // 文章点赞
   router.post("/api/like/update",jwt, controller.client.detail.updateLikeArticle);
-  router.post("/api/like",  controller.client.detail.isLikeArticle);
+  router.post("/api/like", jwt, controller.client.detail.isLikeArticle);
 
   // 评论
   // router.get('/api/commentlist', controller.client.detail.getCommentList)
-  router.post("/api/comment/add", controller.client.comment.addComment);
-  router.post("/api/subComment/add", controller.client.comment.addSubComment);
+  router.post("/api/comment/add",jwt, controller.client.comment.addComment);
+  router.post("/api/subComment/add",jwt, controller.client.comment.addSubComment);
 };
