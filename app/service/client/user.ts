@@ -23,7 +23,7 @@ export default class UserService extends Service {
       login_user = isSaveUser;
     }
     const { _id, username, avatar } = login_user;
-    const token = app.jwt.sign({ id: _id }, app.config.jwt.secret);
+    const token = app.jwt.sign({ uid: _id }, app.config.jwt.secret);
     const userInfo = {
       username,
       avatar
@@ -68,9 +68,9 @@ export default class UserService extends Service {
     });
 
     if (hasUser) {
-      
+
       if (password === hasUser.password) {
-        const token = app.jwt.sign({ id: hasUser._id }, app.config.jwt.secret);
+        const token = app.jwt.sign({ uid: hasUser._id }, app.config.jwt.secret);
         result = {
           code: 0,
           msg: "登录成功",

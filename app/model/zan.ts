@@ -4,20 +4,20 @@ export default app => {
   const ZanSchema = new Schema({
     // 文章id
     article_id: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       require: true
     },
     // 用户id
-    uuid: {
-      type: String,
+    uid: {
+      type: mongoose.Schema.Types.ObjectId,
       require: true
     },
     // 用户是否为这篇文章点赞
-    iszan:{
-        type:Boolean,
-        default:false,
+    iszan: {
+      type: Boolean,
+      default: false
     },
-    
+
     // 创建日期
     create_time: { type: Date, default: Date.now },
 

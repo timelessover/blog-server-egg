@@ -43,15 +43,46 @@ export default class ArticleService extends Service {
       return { code: 1, msg: "获取文章失败" };
     }
   }
-  //  async addLikeCount(id) {
-  //    const { ctx } = this;
-  //    const article = await ctx.model.Article.find({ _id: id })
-  //    const res = await ctx.model.Comment.updateOne(
-  //      {  _id: id  },
-  //      {
-  //        like_count: article.like_count + 1
-  //      }
-  //    );
-  //    return 'ok'
-  //  }
+  async updateLikeArticle(content) {
+    const { article_id, uid } = content;
+    const { ctx } = this;
+    const isSave = await ctx.model.Zan.findOne({
+      article_id,
+      uid
+    });
+    let result;
+    if (!isSave) {
+      const zan = await new ctx.model.Zan(content).save();
+      result = { is_zan: zan.iszan };
+    } else {
+      await ctx.model.Zan.updateOne(
+        {
+          article_id,
+          uid
+        },
+        {
+          iszan: !isSave.iszan
+        }
+      );
+      result = {is_zan: !isSave.iszan };
+    }
+    return result;
+  }
+
+  async isLikeArticle(content) {
+    const { article_id, uid } = content;
+    const { ctx } = this;
+    const isSave = await ctx.model.Zan.findOne({
+      article_id,
+      uid
+    });
+    let result;
+    if (!isSave) {
+      const zan = await new ctx.model.Zan(content).save();
+      result = { is_zan: zan.iszan };
+    } else {
+      result = { is_zan: isSave.iszan };
+    }
+    return result;
+  }
 }

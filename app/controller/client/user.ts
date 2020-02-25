@@ -29,7 +29,6 @@ export default class UserController extends Controller {
     const args = body.split("&");
     let arg = args[0].split("=");
     const access_token = arg[1];
-    console.log(access_token);
     const url = "https://api.github.com/user?access_token=" + access_token;
     const data = await fetch(url);
     const user_info = await data.json();
@@ -39,7 +38,6 @@ export default class UserController extends Controller {
   async generalRegister() {
     const { ctx } = this;
     const body = ctx.request.body;
-
     const result = await ctx.service.client.user.generalRegister(body);
     ctx.body = result;
   }
