@@ -22,13 +22,13 @@ module.exports = app => {
   router.get("/api/comments", controller.client.comment.getCommentList);
   router.post("/api/comment/add", jwt, controller.client.comment.addComment);
   router.post(
-    "/api/subComment/add",
-    jwt,
-    controller.client.comment.addSubComment
-  );
-  router.post(
     "/api/comment/like",
     jwt,
     controller.client.comment.updateLikeComment
+  );
+  router.post(
+    "/api/comment/reply",
+    jwt,
+    controller.client.comment.replyComment
   );
 };

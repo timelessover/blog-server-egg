@@ -46,26 +46,42 @@ export default class ArticleService extends Service {
   async updateLikeArticle(content) {
     const { article_id, uid } = content;
     const { ctx } = this;
-    const isSave = await ctx.model.Zan.findOne({
+    const save_zan = await ctx.model.Zan.findOne({
       article_id,
       uid
     });
-    let result;
-    if (!isSave) {
-      const zan = await new ctx.model.Zan(content).save();
-      result = { is_zan: zan.iszan };
-    } else {
-      await ctx.model.Zan.updateOne(
+    const article = await ctx.model.Article.findOne({
+      _id: article_id
+    });
+    if (!save_zan.iszan) {
+      await ctx.model.Article.updateOne(
         {
-          article_id,
-          uid
+          _id: article_id
         },
         {
-          iszan: !isSave.iszan
+          likes_count: article.likes_count + 1
         }
       );
-      result = {is_zan: !isSave.iszan };
+    } else {
+      await ctx.model.Article.updateOne(
+        {
+          _id: article_id
+        },
+        {
+          likes_count: article.likes_count - 1
+        }
+      );
     }
+    await ctx.model.Zan.updateOne(
+      {
+        article_id,
+        uid
+      },
+      {
+        iszan: !save_zan.iszan
+      }
+    );
+    let result = { is_zan: !save_zan.iszan };
     return result;
   }
 

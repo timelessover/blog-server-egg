@@ -21,6 +21,7 @@ export default app => {
         // 内容
         content: {
           type: String,
+          validate: /\S+/,
           required: true
         },
 

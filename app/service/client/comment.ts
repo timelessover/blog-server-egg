@@ -5,24 +5,20 @@ import { Service } from "egg";
 export default class CommentService extends Service {
   async addComment(content) {
     const { ctx } = this;
-    // const { article_id,uid } = content
-
-    // 处理总
-    // const article = await ctx.model.Article.findOne(
-    //   {
-    //     _id: article_id
-    //   },
-    // );
-    // await ctx.model.Article.updateOne(
-    //   {
-    //     _id: article_id
-    //   },
-    //   {
-    //     comment_count: article.comment_count + 1
-    //   }
-    // );
+    const { article_id } = content;
 
     const result = new ctx.model.Comment(content).save();
+    const article = await ctx.model.Article.findOne({
+      _id: article_id
+    });
+    await ctx.model.Article.updateOne(
+      {
+        _id: article_id
+      },
+      {
+        comment_count: article.comment_count + 1
+      }
+    );
     if (result) {
       return {
         code: 0,
@@ -35,35 +31,16 @@ export default class CommentService extends Service {
       };
     }
   }
-  async addSubComment(content) {
+  async replyComment(body) {
     const { ctx } = this;
-    const { _id, res_id } = content;
-    const comment = await ctx.model.Comment.findOne({ _id })
-      .populate("userInfo")
-      .exec();
-    // 这段文档查询字段没写，可以查询多个字段，ts标注为any
-    const res_userInfo = await ctx.model.User.findOne(
-      { _id: res_id },
-      { username: "username", avatar: "avatar" }
-    );
-    const user = await ctx.model.User.findOne(
-      { _id: res_id },
-      { username: "username", avatar: "avatar" }
-    );
-    const list = comment.res_comment;
-    list.push({
-      res_userInfo: res_userInfo,
-      user: user,
-      likes: 0,
-      content: "太刷了fff"
-    });
-    const res = await ctx.model.Comment.updateOne(
-      { _id },
-      {
-        res_comment: list
-      }
-    );
-    return res;
+    const { comment_id, res_userInfo, uid, content } = body;
+    await new ctx.model.Reply({
+      comment_id,
+      res_userInfo,
+      top_userInfo: uid,
+      content
+    }).save();
+    return { msg: "ok" };
   }
   async getCommentList(content) {
     const { ctx } = this;
@@ -76,10 +53,10 @@ export default class CommentService extends Service {
       https://juejin.im/post/5cf7042df265da1ba647d9d1#heading-1
       async/await在map,forEach等高阶函数中使用问题
     */
-    if (uid) {
-      for (let i = 0; i < comments.length; i++) {
-        let item = comments[i];
-        const { _id } = item;
+    for (let i = 0; i < comments.length; i++) {
+      let item = comments[i];
+      const { _id } = item;
+      if (uid) {
         const commentzan = await ctx.model.Commentzan.findOne({
           comment_id: _id,
           uid
@@ -87,19 +64,21 @@ export default class CommentService extends Service {
         if (commentzan) {
           item.isLiked = commentzan.isLiked;
         }
-        res_comments.push(item);
       }
-
-      return {
-        count: res_comments.length,
-        data: res_comments
-      };
-    } else {
-      return {
-        count: comments.length,
-        data: comments
-      };
+      const reply = await ctx.model.Reply.find({
+        comment_id: _id
+      })
+        .populate(["res_userInfo", "top_userInfo"])
+        .exec();
+      if (reply) {
+        item.res_comment = reply;
+      }
+      res_comments.push(item);
     }
+    return {
+      count: res_comments.length,
+      data: res_comments
+    };
   }
   async updateLikeComment(content) {
     const { ctx } = this;
@@ -111,7 +90,9 @@ export default class CommentService extends Service {
       uid
     });
     // 找到对应的评论
-    const result_comment = await ctx.model.Comment.findOne({ _id: comment_id });
+    const result_comment = await ctx.model.Comment.findOne({
+      _id: comment_id
+    });
     // 该用户是否对该评论点赞过
     if (!result_commentzan) {
       // 第一次点赞，新建一个文档，默认点在为true
@@ -132,13 +113,13 @@ export default class CommentService extends Service {
             likes_count: result_comment.likes_count - 1
           }
         );
-      }else{
-         await ctx.model.Comment.updateOne(
-           { _id: comment_id },
-           {
-             likes_count: result_comment.likes_count + 1
-           }
-         );
+      } else {
+        await ctx.model.Comment.updateOne(
+          { _id: comment_id },
+          {
+            likes_count: result_comment.likes_count + 1
+          }
+        );
       }
       await ctx.model.Commentzan.updateOne(
         { comment_id, uid },
