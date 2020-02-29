@@ -65,32 +65,91 @@ export default class CommentService extends Service {
     );
     return res;
   }
-  async getCommentList(article_id) {
+  async getCommentList(content) {
     const { ctx } = this;
-    const result = await ctx.model.Comment.find({ article_id })
+    const { uid, article_id } = content;
+    const comments = await ctx.model.Comment.find({ article_id })
       .populate("uid")
       .exec();
-    return {
-      count: result.length,
-      data: result
-    };
+    let res_comments: any = [];
+    /*
+      https://juejin.im/post/5cf7042df265da1ba647d9d1#heading-1
+      async/await在map,forEach等高阶函数中使用问题
+    */
+    if (uid) {
+      for (let i = 0; i < comments.length; i++) {
+        let item = comments[i];
+        const { _id } = item;
+        const commentzan = await ctx.model.Commentzan.findOne({
+          comment_id: _id,
+          uid
+        });
+        if (commentzan) {
+          item.isLiked = commentzan.isLiked;
+        }
+        res_comments.push(item);
+      }
+
+      return {
+        count: res_comments.length,
+        data: res_comments
+      };
+    } else {
+      return {
+        count: comments.length,
+        data: comments
+      };
+    }
   }
   async updateLikeComment(content) {
     const { ctx } = this;
     const { uid, comment_id } = content;
-    const result = await ctx.model.Comment.findOne({
+
+    // 该用户为这条评论是否点赞
+    const result_commentzan = await ctx.model.Commentzan.findOne({
       comment_id,
       uid
     });
-    await ctx.model.Comment.updateOne(
-      { _id: comment_id, uid },
-      {
-        isLiked: !result.isLiked
+    // 找到对应的评论
+    const result_comment = await ctx.model.Comment.findOne({ _id: comment_id });
+    // 该用户是否对该评论点赞过
+    if (!result_commentzan) {
+      // 第一次点赞，新建一个文档，默认点在为true
+      await new ctx.model.Commentzan(content).save();
+
+      await ctx.model.Comment.updateOne(
+        { _id: comment_id },
+        {
+          likes_count: result_comment.likes_count + 1
+        }
+      );
+    } else {
+      // 存在该文档，我们更新isLiked状态
+      if (result_commentzan.isLiked) {
+        await ctx.model.Comment.updateOne(
+          { _id: comment_id },
+          {
+            likes_count: result_comment.likes_count - 1
+          }
+        );
+      }else{
+         await ctx.model.Comment.updateOne(
+           { _id: comment_id },
+           {
+             likes_count: result_comment.likes_count + 1
+           }
+         );
       }
-    );
+      await ctx.model.Commentzan.updateOne(
+        { comment_id, uid },
+        {
+          isLiked: !result_commentzan.isLiked
+        }
+      );
+    }
     return {
-      msg: 'ok',
-      isLiked: !result.isLiked
+      msg: "ok",
+      code: 1
     };
   }
 }

@@ -5,7 +5,6 @@ import { Service } from "egg";
  */
 export default class UserService extends Service {
   async githubRegister(user) {
-    console.log(user);
     const { ctx, app } = this;
     const { id, avatar_url, html_url, name } = user;
     const isSaveUser = await ctx.model.User.findOne({ github_id: id });
@@ -26,7 +25,8 @@ export default class UserService extends Service {
     const token = app.jwt.sign({ uid: _id }, app.config.jwt.secret);
     const userInfo = {
       username,
-      avatar
+      avatar,
+      uid:_id
     };
     result = { token, userInfo };
     return result;
@@ -34,13 +34,6 @@ export default class UserService extends Service {
 
   async generalRegister(user) {
     const { ctx } = this;
-    /*
-    email: "714586115@qq.com"
-    username: "Chris"
-    password: "asd123456"
-    confirm: "asd123456"
-    homepage: "wwww"
-    */
     const { username, homepage, email, password } = user;
     const search_res = await ctx.model.User.findOne({ email });
     let result;
@@ -76,7 +69,8 @@ export default class UserService extends Service {
           msg: "登录成功",
           userInfo: {
             username: hasUser.username,
-            avatar: hasUser.avatar
+            avatar: hasUser.avatar,
+            uid: hasUser._id
           },
           token
         };

@@ -1,7 +1,7 @@
 export default app => {
     const mongoose = app.mongoose;
     const Schema = mongoose.Schema;
-    const CommentSchema = new Schema(
+    const ReplySchema = new Schema(
       {
         // 文章id
         article_id: { type: mongoose.Schema.Types.ObjectId, required: true },
@@ -18,6 +18,7 @@ export default app => {
 
         // 点赞数
         likes_count: { type: Number, default: 0 },
+
         // 当前用户是否喜欢
 
         isLiked: { type: Boolean, default: false },
@@ -56,5 +57,5 @@ export default app => {
       },
       { versionKey: false }
     );
-    return mongoose.model('Comment', CommentSchema);
+    return mongoose.model('Reply', ReplySchema);
 };
